@@ -3,8 +3,7 @@
 use Math::Compute ':all';
 
 my %map = ('t', 2);
-my $expr = '5+((1+t)*4)-3'; # 14
-print Dumper(%map);
+my $expr = 'ln(5+((1+t)*4)-3)/ln(14)'; # 14
 
 my $new_expr = &compute(&to_RPN($expr, \%map));
 

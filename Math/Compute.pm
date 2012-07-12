@@ -31,7 +31,7 @@ our $VERSION = '0.01';
 #XSLoader::load('Math::Compute', $VERSION);
 
 # Preloaded methods go here.
-our $DEBUG_LOG = 1;
+our $DEBUG_LOG = 0;
 
 our $NB_ARG = 'nb_arg';
 our $CALC   = 'calc';
