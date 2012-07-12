@@ -270,10 +270,12 @@ sub _analyze {
             &log("( found. Dismiss from the stack.");
             pop @stack;
             
-			if (&_isFunction($stack[$#stack])) {
-				my $peek  = $stack[$#stack];
-				&log("$peek is a function, pop it from the stack to the queue.");
-				push @queue, (pop @stack);
+			if(@stack > 0 ) {
+				if (&_isFunction($stack[$#stack])) {
+					my $peek  = $stack[$#stack];
+					&log("$peek is a function, pop it from the stack to the queue.");
+					push @queue, (pop @stack);
+				}
 			}
         } else {
             &log("$token unknown. Maybe a variable ?. Added to the queue.");
