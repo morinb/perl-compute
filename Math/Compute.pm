@@ -78,9 +78,33 @@ our %operator = (
 our %function = (
         'ln' => {
                 $NB_ARG => 1,
-                $CALC   => \&_ln},
-
+                $CALC   => \&_ln
+		},
+		'sqrt' => {
+				$NB_ARG => 1,
+                $CALC   => \&_sqrt
+		},
+		'exp' => {
+				$NB_ARG => 1,
+                $CALC   => \&_exp
+		},
+		'log' => {
+				$NB_ARG => 1,
+                $CALC   => \&_log
+		},
 );
+
+sub _log {
+	log ($_[0]) / log(10);
+}
+
+sub _exp {
+	exp $_[0];
+}
+
+sub _sqrt {
+	sqrt $_[0];
+}
 
 sub _ln {
     log $_[0];
@@ -124,16 +148,16 @@ sub _format_expression {
     $expr =~ s/\)/ \) /g;
     $expr =~ s/,/ , /g;
     
-    
-    
     for my $op ( keys %operator) {
         $expr =~ s/$operator{$op}{$REGEX}/ $op /g;
     }
     
-    
     $expr =~ s/\s+/ /g;
-    
-    
+
+	# handle unary -
+	$expr =~ s/^(\s*-\s*)/0$1/g;
+	$expr =~ s/\((\s*-\s*)/\( 0$1/g;
+
     $expr;
 }
 
@@ -246,11 +270,11 @@ sub _analyze {
             &log("( found. Dismiss from the stack.");
             pop @stack;
             
-            if (&_isFunction($stack[$#stack])) {
-                my $peek  = $stack[$#stack];
-                &log("$peek is a function, pop it from the stack to the queue.");
-                push @queue, (pop @stack);
-            }
+			if (&_isFunction($stack[$#stack])) {
+				my $peek  = $stack[$#stack];
+				&log("$peek is a function, pop it from the stack to the queue.");
+				push @queue, (pop @stack);
+			}
         } else {
             &log("$token unknown. Maybe a variable ?. Added to the queue.");
             push @queue, $token;
@@ -269,7 +293,9 @@ sub _analyze {
     }
     
     my $result = join ' ', @queue;
-    print "$result\n";
+	$result =~ s/^\s+//;
+	$result =~ s/\s+$//;
+    &log("$result");
     return $result;
 }
 
