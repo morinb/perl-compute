@@ -1,11 +1,15 @@
 #!/usr/bin/perl -w
 
 use Math::Compute ':all';
+use Test;
+
+BEGIN { plan tests => 3}
 
 &testParsing();
 &testComputing();
 &testParsingComputing();
 &testSub();
+&wrongNumberOfParams();
 
 sub testParsing {
 	my $wanted = "0 3 - x 2 * Z0 5 - 2 35 ^ ^ / +";
@@ -17,23 +21,20 @@ sub testParsing {
 
 	my $result = &to_RPN($expr, \%map);
 	
-	print "testParsing 1 :\n";
-	&assert($wanted, $result); 
+	&ok($wanted, $result); 
 	
 	$wanted = "5 1 2 + 4 * + 3 -";
 	$expr = "5+((1+2)*4)-3";
 	
 	$result = &to_RPN($expr, \%map);
-	print "testParsing 2 :\n";
-	&assert($wanted, $result); 
+	&ok($wanted, $result); 
 	
 	
 	$wanted = "1 2 / m g * 2 ^ m log + g exp + * sqrt";
 	$expr = "sqrt((1/2)*(m*g)^2+log(m) + exp(g))";
 	
 	$result = &to_RPN($expr, \%map);
-	print "testParsing 3 :\n";
-	&assert($wanted, $result); 
+	&ok($wanted, $result); 
 }
 
 sub testComputing {
@@ -41,15 +42,13 @@ sub testComputing {
 	my $expr = "3 4 -";
 	
 	my $result = &compute($expr);
-	print "testComputing 1 :\n";
-	&assert($wanted, $result); 
+	&ok($wanted, $result); 
 
 	$wanted = "1";
 	$expr = "1e+1 log";
 	
 	$result = &compute($expr);
-	print "testComputing 2 :\n";
-	&assert($wanted, $result); 		
+	&ok($wanted, $result); 		
 }
 
 sub testParsingComputing {
@@ -59,8 +58,7 @@ sub testParsingComputing {
 	$map{'a'} = 3;
 	$map{'b'} = 4;
 	my $result = &compute(&to_RPN($expr, \%map));
-	print "testParsingComputing 1 :\n";
-	&assert($wanted, $result); 	
+	&ok($wanted, $result); 	
 	
 	
 	$wanted = "6";
@@ -68,22 +66,19 @@ sub testParsingComputing {
 	$map{'m'} = 3;
 	$map{'g'} = 4;
 	$result = &compute(&to_RPN($expr, \%map));
-	print "testParsingComputing 2 :\n";
-	&assert($wanted, $result); 	
+	&ok($wanted, $result); 	
 	
 	
 	$wanted = 3**10**2;
 	$expr = "3^10^2";
 	$result = &compute(&to_RPN($expr, \%map));
-	print "testParsingComputing 3 :\n";
-	&assert($wanted, $result); 	
+	&ok($wanted, $result); 	
 
 
 	$wanted = (3**10)**2;
 	$expr = "(3^10)^2";
 	$result = &compute(&to_RPN($expr, \%map));
-	print "testParsingComputing 4 :\n";
-	&assert($wanted, $result); 	
+	&ok($wanted, $result); 	
 }
 
 sub testSub {
@@ -91,26 +86,25 @@ sub testSub {
 	my $wanted = "-3";
 	my $expr = "(-1)+(-2)";
 	my $result = &compute(&to_RPN($expr, \%map));
-	print "testSub 1 :\n";
-	&assert($wanted, $result);
+	&ok($wanted, $result);
 	
 
 	$wanted = "0";
 	$expr = "3+($result)";
 	$result = &compute(&to_RPN($expr, \%map));
-	print "testSub 2 :\n";
-	&assert($wanted, $result);
+	&ok($wanted, $result);
 	
 	
 }
 
-sub assert {
-	my ($wanted, $result) = @_;
+sub wrongNumberOfParams {
+	my %map = ();
+	my $expr = "log(2,1)";
+
+	my $result = &compute(&to_RPN($expr, \%map));
 	
-	if ($wanted ne $result) {
-		print "Error [$result] is not equals to\n      [$wanted]\n";
-	} else {
-		print "OK    [$result] is equals to\n      [$wanted]\n";
-	}
-	print "\n";
+	
+	
 }
+
+

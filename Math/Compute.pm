@@ -47,50 +47,56 @@ our %operator = (
                  $REGEX      => '[+]',
                  $PRECEDENCE => 12,
                  $LEFT_ASSO  => $TRUE,
-                 $CALC       => \&_add},
+                 $CALC       => \&_add,
+                },
         '-' => { $NB_ARG => 2,
                  $REGEX  => '[-]',
                  $PRECEDENCE => 12,
                  $LEFT_ASSO  => $TRUE,
-                 $CALC    => \&_sub },
+                 $CALC    => \&_sub,
+                },
         '*' => { $NB_ARG => 2,
                  $REGEX  => '[*]',
                  $PRECEDENCE => 13,
                  $LEFT_ASSO  => $TRUE,
-                 $CALC    => \&_mul },
+                 $CALC    => \&_mul,
+                },
         '/' => { $NB_ARG => 2,
                  $REGEX  => '[/]',
                  $PRECEDENCE => 13,
                  $LEFT_ASSO  => $TRUE,
-                 $CALC    => \&_div },
+                 $CALC    => \&_div,
+                },
         '%' => { $NB_ARG => 2,
                  $REGEX  => '[%]',
                  $PRECEDENCE => 13,
                  $LEFT_ASSO  => $TRUE,
-                 $CALC    => \&_mod },
+                 $CALC    => \&_mod,
+                },
         '^' => { $NB_ARG => 2,
                  $REGEX  => '[\^]',
                  $PRECEDENCE => 14,
                  $LEFT_ASSO  => $FALSE,
-                 $CALC    => \&_pow },
+                 $CALC    => \&_pow,
+                },
 );
 
 our %function = (
         'ln' => {
                 $NB_ARG => 1,
-                $CALC   => \&_ln
+                $CALC   => \&_ln,
 		},
 		'sqrt' => {
 				$NB_ARG => 1,
-                $CALC   => \&_sqrt
+                $CALC   => \&_sqrt,
 		},
 		'exp' => {
 				$NB_ARG => 1,
-                $CALC   => \&_exp
+                $CALC   => \&_exp,
 		},
 		'log' => {
 				$NB_ARG => 1,
-                $CALC   => \&_log
+                $CALC   => \&_log,
 		},
 );
 
@@ -343,7 +349,7 @@ sub compute {
     }
     
     if(@stack != 1) { # only the final result should be on the stack
-        croak "Some tokens are still on the stack, though all the formula has been analyzed.";
+        confess "Some tokens are still on the stack, though all the formula has been analyzed.";
     }
     
     return pop @stack;
