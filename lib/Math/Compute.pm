@@ -403,28 +403,15 @@ Math::Compute - Perl extension for Math formula expression.
 
 
 =head2 EXPORT
+     to_RPN, compute
 
+     to_RPN take 2 arguments, an expression and a hash reference that contains variables definition.
 
-
-=head1 HISTORY
-
-=over 8
-
-=back
-
-
-
+     compute take 1 argument, an RPN expression.
 
 =head1 SEE ALSO
 
-Mention other useful documentation such as the documentation of
-related modules or operating system documentation (such as man pages
-in UNIX), or any relevant external documentation such as RFCs or
-standards.
-
-If you have a mailing list set up for your module, mention it here.
-
-If you have a web site set up for your module, mention it here.
+The Shunting-Yard algorithm : http://en.wikipedia.org/wiki/Shunting-yard_algorithm
 
 =head1 AUTHOR
 
