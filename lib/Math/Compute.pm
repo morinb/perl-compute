@@ -180,7 +180,7 @@ sub to_RPN {
     my @stack = ();
     my @queue = ();
     
-    my @tokens = split / /, $expr;
+    my @tokens = split(/ /, $expr);
     
     _analyze(\@tokens, \@queue, \@stack, \%var);
 }
@@ -312,7 +312,7 @@ sub _analyze {
 sub compute {
     my $expr = shift;
     
-    my @tokens = split ' ', $expr;
+    my @tokens = split(' ', $expr);
     
     my @stack = ();
     
